@@ -57,7 +57,7 @@ jobs:
       run: |
         echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
         chmod 600 key.pem
-        ssh -v -i key.pem -p 2222 webdeploy@schostore.synology.me
+        ssh -v -o StrictHostKeyChecking=no -i key.pem -p 2222 webdeploy@schostore.synology.me
 
     # - name: 🚚 Deploy via direct rsync (verbose)
     #   run: |
