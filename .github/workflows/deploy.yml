@@ -52,18 +52,6 @@ jobs:
     #   run: |
     #     ls -la backend/dist
     #     ls -la frontend/dist
-        
-    - name: 🚚 Deploy via rsync
-      uses: burnett01/rsync-deployments@5.2
-      with:
-        switches: -avzr --exclude='uploads/' --exclude='db.sqlite'
-        path: |
-          backend/dist
-        remote_path: /volume1/web/LaurinsSite
-        remote_host: ${{ secrets.NAS_HOST }}
-        remote_user: ${{ secrets.NAS_USER }}
-        remote_key: ${{ secrets.NAS_SSH_KEY }}
-        remote_port: 2222
 
     - name: 🚚 Deploy via direct rsync
       run: |
