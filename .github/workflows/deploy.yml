@@ -33,6 +33,7 @@ jobs:
       run: |
         cd backend
         npm ci
+        npm install --save-dev @types/express @types/bcrypt @types/multer @types/jsonwebtoken
 
     - name: 🔨 Build backend
       run: |
