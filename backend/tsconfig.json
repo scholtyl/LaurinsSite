@@ -7,7 +7,4 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "exclude": [
-    "!node_modules/@types"
-]
 }
