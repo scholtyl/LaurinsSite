@@ -32,7 +32,7 @@ jobs:
     - name: 📦 Install backend dependencies
       run: |
         cd backend
-        npm ci
+        npm install
 
     - name: 🔨 Build backend
       run: |
@@ -43,7 +43,7 @@ jobs:
       run: |
         cd frontend
         export NG_BUILD_ID="$BUILD_ID"
-        npm ci
+        npm install
 
     - name: 🔨 Build frontend
       run: |
