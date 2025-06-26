@@ -1,0 +1,16 @@
+<div class="flex justify-center flex-wrap flex-col content-center mt-4 gap-5">
+
+  @for (user of users; track $index) {
+
+    <div (click)="selectUser(user.name!)" class="card card-side cursor-pointer bg-secondary w-96 shadow-xl">
+      <div class="flex items-center">
+        <i class="bx bx-user text-6xl ml-6"></i>
+      </div>
+      <div class="p-3 mx-auto flex justify-center flex-col items-center">
+        <h2 class="card-title text-base-content">{{user.name}}</h2>
+        <p class="text-base-content">Last Training: {{user.lastTraining ? (user.lastTraining | datePipe) : "- - -"}}</p>
+      </div>
+    </div>
+  }
+
+</div>
