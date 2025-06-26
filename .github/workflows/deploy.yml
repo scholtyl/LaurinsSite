@@ -48,12 +48,18 @@ jobs:
     #     export BUILD_ID="$BUILD_ID"
     #     npm run build
 
-    - name: 📂 SFTP Deploy via SSH Key
-      uses: easingthemes/ssh-deploy@v2.2.11
+    - name: 🚀 SFTP Deploy Frontend
+      uses: SamKirkland/FTP-Deploy-Action@v4.6.0
       with:
-        REMOTE_HOST: ${{ secrets.NAS_HOST }}
-        REMOTE_USER: ${{ secrets.NAS_USER }}
-        SSH_PRIVATE_KEY: ${{ secrets.NAS_SSH_KEY }}
-        REMOTE_PORT: 2222
-        SOURCE: "frontend/dist/"
-        TARGET: "/volume1/web/LaurinsSite/"
+        server: ${{ secrets.NAS_HOST }}
+        username: ${{ secrets.NAS_USER }}
+        port: 2222
+        protocol: sftp
+        private-key: ${{ secrets.NAS_SSH_KEY }}
+        passphrase: ''
+        local-dir: ./frontend/dist/
+        server-dir: /volume1/web/LaurinsSite/frontend/
+        exclude: |
+          **/.git*
+          **/node_modules/**
+        dangerous-clean-slate: false
