@@ -53,22 +53,18 @@ jobs:
     #     ls -la backend/dist
     #     ls -la frontend/dist
 
-    - name: test ssh
-      run: |
-        echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
-        chmod 600 key.pem
-        ssh -v -o StrictHostKeyChecking=no -i key.pem -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}
-
-    # - name: 🚚 Deploy via direct rsync (verbose)
+    # - name: test ssh
     #   run: |
     #     echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
     #     chmod 600 key.pem
+    #     ssh -v -o StrictHostKeyChecking=no -i key.pem -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}
 
-    #     echo "Starting rsync..."
-    #     rsync -avz --progress --human-readable --stats \
-    #       -e "ssh -i key.pem -p 2222 -o StrictHostKeyChecking=no" \
-    #       backend/dist/ \
-    #       ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:/volume1/web/LaurinsSite/backend/
+    - name: 🚚 Deploy via direct rsync
+      run: |
+        echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
+        chmod 600 key.pem
+
+        rsync -avz --progress -e "ssh -i key.pem -p 2222 -o StrictHostKeyChecking=no" backend/dist/ webdeploy@schostore.synology.me:/volume1/web/LaurinsSite
 
     # - name: 🔁 Restart PM2 app on NAS
     #   run: |
