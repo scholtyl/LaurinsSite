@@ -53,8 +53,8 @@ jobs:
       with:
         switches: -avzr --exclude='uploads/' --exclude='db.sqlite'
         path: |
-          backend/dist/
-          frontend/dist/
+          backend/dist
+          frontend/dist
         remote_path: /volume1/web/LaurinsSite
         remote_host: ${{ secrets.NAS_HOST }}
         remote_user: ${{ secrets.NAS_USER }}
