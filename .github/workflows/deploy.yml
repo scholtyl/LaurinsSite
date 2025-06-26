@@ -29,10 +29,19 @@ jobs:
       with:
         node-version: '20'
 
-    - name: 📦 Install backend dependencies and
+    - name: 📦 Install backend dependencies
       run: |
         cd backend
         npm install
+
+    - name: Verify installed types
+      run: |
+        cd backend/node_modules/@types
+        ls -l
+
+    - name: build
+      run: |
+        cd backend
         npm run build
 
     - name: 📦 Install frontend dependencies
