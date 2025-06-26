@@ -65,6 +65,16 @@ jobs:
         remote_key: ${{ secrets.NAS_SSH_KEY }}
         remote_port: 2222
 
+    - name: 🚚 Deploy via direct rsync
+      run: |
+        echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
+        chmod 600 key.pem
+
+        rsync -avz \
+          -e "ssh -i key.pem -p 2222 -o StrictHostKeyChecking=no" \
+          backend/dist/ frontend/dist/ \
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:/volume1/web/LaurinsSite
+
     # - name: 🔁 Restart PM2 app on NAS
     #   run: |
     #     echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
