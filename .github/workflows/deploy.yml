@@ -28,6 +28,9 @@ jobs:
       with:
         node-version: '20'
 
+    - name: add npm install
+      uses: npm install
+
     - name: 📦 Install backend dependencies
       run: |
         cd backend
