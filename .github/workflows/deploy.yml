@@ -48,6 +48,14 @@ jobs:
         export BUILD_ID="$BUILD_ID"
         npm run build
 
+    - name: check for files
+      run: |
+        ls frontend/dist
+        ls backend/dist
+        echo host ${{ secrets.NAS_HOST }}
+        echo user ${{ secrets.NAS_USER }}
+        echo key ${{ secrets.NAS_SSH_KEY }}
+        
     - name: 🚚 Deploy via rsync
       uses: burnett01/rsync-deployments@5.2
       with:
