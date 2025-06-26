@@ -1,0 +1,90 @@
+# .github/workflows/deploy.yml
+name: Deploy to Synology NAS
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  BUILD_ID: "${{ github.run_number }}"
+
+jobs:
+  Build-Frontend-Backend:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_ID: ${{ github.run_number }}
+
+    outputs:
+      artifact_name: ${{ steps.name_step.outputs.artifact_name }}
+
+    steps:
+      - name: 🛒 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🕒 Set date and artifact name
+        id: name_step
+        run: |
+          build_id=${BUILD_ID}
+          build_date=$(date +'%d.%m.%Y')
+          artifact_name="LaurinsSite-v${build_id}-${build_date}"
+          echo "artifact_name=$artifact_name" >> $GITHUB_OUTPUT
+
+      - name: 📦 Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: 🔨 Build backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: 📦 Install frontend dependencies
+        run: |
+          cd frontend
+          export NG_BUILD_ID=${BUILD_ID}
+          npm ci
+
+      - name: 🔨 Build frontend
+        run: |
+          cd frontend
+          export BUILD_ID=${BUILD_ID}
+          npm run build
+
+      - name: 🧹 Reorganize build outputs
+        run: |
+          mkdir -p LaurinsSite/backend LaurinsSite/frontend
+          cp -r backend/dist/src/* LaurinsSite/backend/
+          cp -r frontend/dist/gym-tracker/browser/* LaurinsSite/frontend/
+
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.name_step.outputs.artifact_name }}
+          path: LaurinsSite/
+
+  Deploy-to-Nas:
+      needs: Build-Frontend-Backend
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: ⬇️ Download build artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: ${{ needs.Build-Frontend-Backend.outputs.artifact_name }}
+            path: ./build
+
+        - name: 🔐 Prepare SSH key
+          run: |
+            echo "${{ secrets.NAS_SSH_KEY }}" > id_rsa
+            chmod 600 id_rsa
+
+        - name: 📤 Upload backend to NAS
+          run: |
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/backend/* webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/backend/
+
+        - name: 📤 Upload frontend to NAS
+          run: |
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/frontend/* webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/frontend/
