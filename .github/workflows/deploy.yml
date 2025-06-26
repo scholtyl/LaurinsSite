@@ -48,6 +48,11 @@ jobs:
         export BUILD_ID="$BUILD_ID"
         npm run build
 
+    - name: Debug local frontend/dist and backend/dist content
+      run: |
+        ls -la backend/dist
+        ls -la frontend/dist
+        
     - name: 🚚 Deploy via rsync
       uses: burnett01/rsync-deployments@5.2
       with:
