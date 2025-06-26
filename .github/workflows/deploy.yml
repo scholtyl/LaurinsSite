@@ -30,8 +30,6 @@ jobs:
       run: |
         cd backend
         npm ci
-        cd node_modules
-         ls -la @types
 
     - name: 🔨 Build backend
       run: |
