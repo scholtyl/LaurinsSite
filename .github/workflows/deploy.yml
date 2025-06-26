@@ -31,6 +31,7 @@ jobs:
     - name: 📦 Install backend dependencies
       run: |
         cd backend
+        ls -la
         npm ci
         echo "Checking installed TypeScript version:"
         npx tsc --version
