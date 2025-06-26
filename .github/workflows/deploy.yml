@@ -48,29 +48,12 @@ jobs:
     #     export BUILD_ID="$BUILD_ID"
     #     npm run build
 
-    # - name: Debug local frontend/dist and backend/dist content
-    #   run: |
-    #     ls -la backend/dist
-    #     ls -la frontend/dist
-
-    # - name: test ssh
-    #   run: |
-    #     echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
-    #     chmod 600 key.pem
-    #     ssh -v -o StrictHostKeyChecking=no -i key.pem -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}
-
-    - name: 🚚 Deploy via direct rsync
-      run: |
-        echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
-        chmod 600 key.pem
-
-        rsync -avz --progress -e "ssh -i key.pem -p 2222 -o StrictHostKeyChecking=no" backend/dist/ webdeploy@schostore.synology.me:/volume1/web/LaurinsSite
-
-    # - name: 🔁 Restart PM2 app on NAS
-    #   run: |
-    #     echo "${{ secrets.NAS_SSH_KEY }}" > key.pem
-    #     chmod 600 key.pem
-    #     ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }} 'pm2 restart laurinsSite-backend'
-
-      # - name: 🧹 Clean up SSH key
-      #   run: rm -f key.pem
+    - name: 📂 SFTP Deploy via SSH Key
+      uses: easingthemes/ssh-deploy@v2.2.11
+      with:
+        REMOTE_HOST: ${{ secrets.NAS_HOST }}
+        REMOTE_USER: ${{ secrets.NAS_USER }}
+        SSH_PRIVATE_KEY: ${{ secrets.NAS_SSH_KEY }}
+        REMOTE_PORT: 2222
+        SOURCE: "frontend/dist/"
+        TARGET: "/volume1/web/LaurinsSite/"
