@@ -9,6 +9,8 @@ on:
 env:
   BUILD_ID: "${{ github.run_number }}-${{ github.sha }}"
 
+  workflow_dispatch:
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -47,19 +49,14 @@ jobs:
     #     cd frontend
     #     export BUILD_ID="$BUILD_ID"
     #     npm run build
-
-    - name: 🚀 SFTP Deploy Frontend
-      uses: SamKirkland/FTP-Deploy-Action@v4.6.0
+    
+    - name: SFTP Deploy
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.1
       with:
-        server: ${{ secrets.NAS_HOST }}
         username: ${{ secrets.NAS_USER }}
+        server: ${{ secrets.NAS_HOST }}
         port: 2222
-        protocol: sftp
-        private-key: ${{ secrets.NAS_SSH_KEY }}
-        passphrase: ''
-        local-dir: ./frontend/dist/
-        server-dir: /volume1/web/LaurinsSite/frontend/
-        exclude: |
-          **/.git*
-          **/node_modules/**
-        dangerous-clean-slate: false
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        local_path: ./frontend/dist/
+        remote_path: /volume1/web/LaurinsSite
+        args: '-o ConnectTimeout=5'
