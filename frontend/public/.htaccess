@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Falls eine Datei oder ein Verzeichnis existiert, lade diese ganz normal
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Alles andere wird an index.html weitergeleitet
+  RewriteRule ^.*$ /index.html [L]
+</IfModule>

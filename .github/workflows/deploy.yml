@@ -52,16 +52,19 @@ jobs:
           cd frontend
           export BUILD_ID=${BUILD_ID}
           npm run build
-
-      - name: 🧹 Reorganize build outputs
+          
+      - name: 📦 Reorganize build outputs
         run: |
           mkdir -p LaurinsSite/backend LaurinsSite/frontend
+          shopt -s dotglob
           cp -r backend/dist/src/* LaurinsSite/backend/
+          cp backend/package*.json LaurinsSite/backend/
           cp -r frontend/dist/gym-tracker/browser/* LaurinsSite/frontend/
 
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: ${{ steps.name_step.outputs.artifact_name }}
           path: LaurinsSite/
 
@@ -83,8 +86,12 @@ jobs:
 
         - name: 📤 Upload backend to NAS
           run: |
-            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/backend/* webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/backend/
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/backend/. webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/backend/
 
         - name: 📤 Upload frontend to NAS
           run: |
-            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/frontend/* webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/frontend/
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/frontend/. webdeploy@schostore.synology.me:/home/../../web/LaurinsSite/frontend/
+
+        - name: 🔧 Install backend on NAS
+          run: |
+            ssh -p 2222 -i id_rsa webdeploy@schostore.synology.me "source ~/.profile && cd /volume1/web/LaurinsSite/backend && npm ci --only=production"
