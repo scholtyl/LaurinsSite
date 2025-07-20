@@ -14,23 +14,16 @@ dotenv.config();
 const app = express();
 
 app.set('trust proxy', true);
-app.use(cors({
-    origin: process.env.NODE_ENV === 'production'
-    ? ['https://schostore.synology.me']
-    : ['http://localhost:4200'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
-if (process.env.NODE_ENV === "production") {
-  app.use((req, res, next) => {
-    if (req.secure || req.headers["x-forwarded-proto"] === "https") {
-      next();
-    } else {
-      res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-  });
-}
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://schostore.synology.me:5600']  // your real frontend URL with port!
+    : ['http://localhost:4200'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,   // important to allow sending JWT auth headers/cookies
+}));
 
 app.use(express.json());
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,5 @@ export class URLService {
 
   constructor() { }
 
-  public static BackendURL = "http://localhost:8000";
-  //public static BackendURL = "https://schostore.synology.me:8025";
+  public static BackendURL = environment.backendUrl;
 }
