@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Router } from "express";
-import getDB from "../DB/db";
-import { StatisticsDTO } from "../DTOs/statisticsDTO";
+import getDB from "../../DB/db";
+import { StatisticsDTO } from "../../DTOs/statisticsDTO";
 
 const router = Router();
 

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { Router } from "express";
-import { MachineDTO } from "../DTOs/machineDTO";
-import getDB from "../DB/db";
-import { TrainingDTO } from "../DTOs/trainingDTO";
+import { MachineDTO } from "../../DTOs/machineDTO";
+import getDB from "../../DB/db";
+import { TrainingDTO } from "../../DTOs/trainingDTO";
 
 const router = Router();
 

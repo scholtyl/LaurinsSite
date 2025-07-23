@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import getDB from "../DB/db";
+import getDB from "../../DB/db";
 import multer from "multer";
-import { MachineDTO } from "../DTOs/machineDTO";
+import { MachineDTO } from "../../DTOs/machineDTO";
 import bcrypt from "bcrypt";
 
 const router = Router();

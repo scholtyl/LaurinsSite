@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UserDTO } from "../DTOs/userDTO";
-import getDB from "../DB/db";
+import { UserDTO } from "../../DTOs/userDTO";
+import getDB from "../../DB/db";
 import bcrypt from "bcrypt";
 
 const router = Router();
