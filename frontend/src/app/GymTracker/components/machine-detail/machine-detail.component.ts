@@ -3,11 +3,11 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Machine } from '../../models/machine';
 import { Training } from '../../models/training';
 import { MachineService } from '../../services/machine/machine.service';
-import { DatePipe } from '../../pipes/date-pipe';
+import { DatePipe } from '../../../pipes/date-pipe';
 import { NgClass } from '@angular/common';
 import { TrainingService } from '../../services/training/training.service';
 import { FormsModule } from '@angular/forms';
-import { URLService } from '../../services/url/url.service';
+import { URLService } from '../../../services/url/url.service';
 
 @Component({
   selector: 'app-machine-detail',

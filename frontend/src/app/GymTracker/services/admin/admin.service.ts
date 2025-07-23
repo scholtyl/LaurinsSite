@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Machine } from '../../models/machine';
 import { MachineDTO } from '../../models/DTOs/machineDTO';
-import { URLService } from '../url/url.service';
+import { URLService } from '../../../services/url/url.service';
 
 @Injectable({
   providedIn: 'root',

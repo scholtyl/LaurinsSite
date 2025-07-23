@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { MachineService } from '../../services/machine/machine.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
-import { URLService } from '../../services/url/url.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { URLService } from '../../../services/url/url.service';
 
 @Component({
   selector: 'machines-component',

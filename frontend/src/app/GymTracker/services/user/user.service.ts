@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { UserDTO } from '../../models/DTOs/userDTO';
-import { URLService } from '../url/url.service';
+import { URLService } from '../../../services/url/url.service';
 
 @Injectable({
   providedIn: 'root'

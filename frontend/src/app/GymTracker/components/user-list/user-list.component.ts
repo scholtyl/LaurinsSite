@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
-import { DatePipe } from '../../pipes/date-pipe';
+import { DatePipe } from '../../../pipes/date-pipe';
 import { User } from '../../models/user';
 
 @Component({

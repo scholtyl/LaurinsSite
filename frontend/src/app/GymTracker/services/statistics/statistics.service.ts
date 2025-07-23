@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { URLService } from '../url/url.service';
+import { URLService } from '../../../services/url/url.service';
 import { StatisticsDTO } from '../../models/DTOs/statisticsDTO';
 import { Statistic } from '../../models/statistic';
 

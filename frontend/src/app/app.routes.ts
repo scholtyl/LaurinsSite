@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { MachineDetailComponent } from './components/machine-detail/machine-detail.component';
-import { MachinesComponent } from './components/machines/machines.component';
+import { HomeComponent } from './GymTracker/components/home/home.component';
+import { MachineDetailComponent } from './GymTracker/components/machine-detail/machine-detail.component';
+import { MachinesComponent } from './GymTracker/components/machines/machines.component';
 import { authGuard } from './routeGuards/auth/auth.guard';
 import { antiAuthGuard } from './routeGuards/antiauth/anti-auth.guard';
-import { AdminComponent } from './components/admin/admin.component';
+import { AdminComponent } from './GymTracker/components/admin/admin.component';
 import { adminGuard } from './routeGuards/admin/admin.guard';
-import { StatisticsComponent } from './components/statistics/statistics.component';
+import { StatisticsComponent } from './GymTracker/components/statistics/statistics.component';
+import { HomeComponent as PietHomeComponent } from './PietsBar/components/home/piet.home.cp';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,11 @@ export const routes: Routes = [
     title: 'GymTracker',
     component: HomeComponent,
     canActivate: [antiAuthGuard]
+  },
+  {
+    path: 'Piets',
+    title: 'Piet\'s Bar',
+    component: PietHomeComponent,
   },
   {
     path: 'machine/:id',

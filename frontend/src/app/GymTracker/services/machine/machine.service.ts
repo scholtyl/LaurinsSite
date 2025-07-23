@@ -5,7 +5,7 @@ import { MachineDTO } from '../../models/DTOs/machineDTO';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { TrainingDTO } from '../../models/DTOs/trainingDTO';
-import { URLService } from '../url/url.service';
+import { URLService } from '../../../services/url/url.service';
 
 @Injectable({
   providedIn: 'root',
