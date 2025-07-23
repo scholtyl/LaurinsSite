@@ -34,7 +34,6 @@ async function getDB(): Promise<Database> {
             )
             `);
 
-    // Create Trainings Table
     await db.exec(`
         CREATE TABLE IF NOT EXISTS trainings (
             id TEXT PRIMARY KEY,  
@@ -55,11 +54,25 @@ async function getDB(): Promise<Database> {
             FOREIGN KEY (machine_id) REFERENCES machines(id) ON DELETE CASCADE
             )
             `);
+    
+    await db.exec(`
+        CREATE TABLE IF NOT EXISTS guests (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            numberOfRemainingDrinks INTEGER NOT NULL,
+            numberOfConsumedDrinks INTEGER NOT NULL
+            )
+            `);
 
-    // Seed all the needed entities
+            // Seed all the needed entities
+    
+    // GymTracker        
     await DbSeeder.seedUsers();
     await DbSeeder.seedMachines();
     await DbSeeder.seedTrainings();
+
+    // Piets
+    await DbSeeder.seedGuets();
   }
 
   return db;

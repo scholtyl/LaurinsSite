@@ -12,9 +12,14 @@ export class GuestService {
 
   constructor(private http: HttpClient){}
 
-  private apiUrl = URLService.BackendURL + '/api/piets/guests';
+  private apiUrl = URLService.BackendURL + '/api/piets';
 
   getGuests(): Observable<GuestDTO[]> {
-    return this.http.get<GuestDTO[]>(this.apiUrl);
+    return this.http.get<GuestDTO[]>(this.apiUrl + "/guests");
   }
+
+  subtractDrinkfromUser(id: string): Observable<GuestDTO[]> {
+    return this.http.get<GuestDTO[]>(this.apiUrl + "/subtractDrink/" + id);
+  }
+
 }

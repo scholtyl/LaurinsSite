@@ -28,6 +28,11 @@ export class HomeComponent {
   }
 
   SubtractDrinkfromUser(id: string){
-
+    this.gastService.subtractDrinkfromUser(id).subscribe({
+      next: (result) => {
+        this.guests = result;
+      },
+      error: console.log,
+    });
   }
 }
