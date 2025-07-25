@@ -14,36 +14,42 @@ export const routes: Routes = [
     path: '',
     title: 'GymTracker',
     component: HomeComponent,
-    canActivate: [antiAuthGuard]
+    canActivate: [antiAuthGuard],
+    data: { title: "Gym Tracker" }
   },
   {
     path: 'Piets',
     title: 'Piet\'s Bar',
     component: PietHomeComponent,
+    data: { title: "Piet's Bar" }
   },
   {
     path: 'machine/:id',
     title: 'GymTracker',
     component: MachineDetailComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: "Gym Tracker" }
   },
   {
     path: 'machines',
     title: 'GymTracker',
     component: MachinesComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: "Gym Tracker" }
   },
   {
     path: 'admin',
     title: 'GymTracker',
     component: AdminComponent,
-    canActivate: [adminGuard]
+    canActivate: [adminGuard],
+    data: { title: "Gym Tracker" }
   },
   {
     path: 'statistics',
     title: 'GymTracker',
     component: StatisticsComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: "Gym Tracker" }
   },
   {
     path: '**',

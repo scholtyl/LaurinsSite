@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'navbar-component',
@@ -10,7 +11,24 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
 
-  constructor(private authService: AuthService, private router : Router){}
+  title = 'Laurins Site';
+
+  constructor(private authService: AuthService, private router : Router, private route: ActivatedRoute){
+
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => {
+          let route = this.route;
+          while (route.firstChild) route = route.firstChild;
+          return route.snapshot.data['title'];
+        })
+      )
+      .subscribe((title: string) => {
+        this.title = title;
+      });
+
+  }
 
   isAdmin()
   {
