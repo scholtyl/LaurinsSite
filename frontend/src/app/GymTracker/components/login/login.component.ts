@@ -30,7 +30,7 @@ export class LoginComponent {
       next: (response) => {
         this.loginFailed = false;
         // Store token and set current user data based on decoded token
-        this.router.navigate(['/machines']);
+        this.router.navigate(['GymTracker/machines']);
       },
       error: (error) => {
         this.loginFailed = true;

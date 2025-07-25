@@ -61,7 +61,7 @@ export class MachineDetailComponent implements OnInit {
       // Submit for ADD
       this.trainingService.addTraining(this.editTraining!).subscribe({
         next: () => {
-          this.router.navigate(['/machines']);
+          this.router.navigate(['GymTracker/machines']);
         },
         error: console.log,
       });

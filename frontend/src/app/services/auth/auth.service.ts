@@ -26,8 +26,8 @@ export class AuthService {
     return this.http.post<any>(this.apiUrl, { username, pin }).pipe(
       tap((response) => {
         if (response.token) {
-          localStorage.setItem(this.tokenKey, response.token);  // ✅ Store token in localStorage
-          this.setCurrentUser(response.token);  // ✅ Set current user state
+          localStorage.setItem(this.tokenKey, response.token);
+          this.setCurrentUser(response.token);
         }
       })
     );
@@ -36,7 +36,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.currentUserSubject.next(null);
-    this.router.navigate(['']);
+    this.router.navigate(['/GymTracker']);
   }
 
   setCurrentUser(token: string): void {
@@ -51,9 +51,12 @@ export class AuthService {
   decodeJwt(token: string): any {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
     return JSON.parse(jsonPayload);
   }
 

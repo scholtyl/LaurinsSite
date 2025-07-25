@@ -39,6 +39,6 @@ export class MachinesComponent {
   }
 
   selectMachine(id: number): void {
-    this.router.navigate([`/machine/${id}`]);
+    this.router.navigate([`GymTracker/machine/${id}`]);
   }
 }

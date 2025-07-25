@@ -7,14 +7,12 @@ import { filter, map } from 'rxjs/operators';
   selector: 'navbar-component',
   imports: [RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-
   title = 'Laurins Site';
 
-  constructor(private authService: AuthService, private router : Router, private route: ActivatedRoute){
-
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -27,22 +25,23 @@ export class NavbarComponent {
       .subscribe((title: string) => {
         this.title = title;
       });
-
   }
 
-  isAdmin()
-  {
+  RouterHome() {
+    const urlSegments = this.router.url.split('/').filter(Boolean);
+    return urlSegments.length > 0 ? urlSegments[0] : '/';
+  }
+
+  isAdmin() {
     return this.authService.isAdmin();
   }
 
-  isloggedIn()
-  {
+  isloggedIn() {
     return this.authService.isLoggedIn();
   }
 
-  logout()
-  {
+  logout() {
     this.authService.logout();
-    this.router.navigate([""])
+    this.router.navigate(['GymTracker']);
   }
 }
