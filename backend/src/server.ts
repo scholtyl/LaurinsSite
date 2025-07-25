@@ -1,13 +1,14 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import userController from "./controllers/userController";
-import machineController from "./controllers/machineController";
-import trainingController from "./controllers/trainingController";
-import statisticsController from "./controllers/statisticsController";
-import adminController from "./controllers/adminController";
+import userController from "./controllers/GymTracker/userController";
+import machineController from "./controllers/GymTracker/machineController";
+import trainingController from "./controllers/GymTracker/trainingController";
+import statisticsController from "./controllers/GymTracker/statisticsController";
+import adminController from "./controllers/GymTracker/adminController";
 import { authMiddleware } from "./middlewares/jwtMiddleware";
 import { adminMiddleware } from "./middlewares/adminMiddleware";
+import guestController from "./controllers/PietsBar/guestController";
 
 dotenv.config();
 
@@ -27,11 +28,17 @@ app.use(cors({
 
 app.use(express.json());
 
+// --------- GymTracker --------- 
 app.use("/api/user", userController);
 app.use("/api/machine", authMiddleware, machineController);
 app.use("/api/training", authMiddleware, trainingController);
 app.use("/api/statistics", authMiddleware, statisticsController);
 app.use("/api/admin", authMiddleware, adminMiddleware, adminController);
+// --------- GymTracker --------- 
+
+// --------- Piets --------- 
+app.use("/api/piets", guestController);
+// --------- Piets --------- 
 
 app.use(express.static("public"));
 

@@ -8,7 +8,7 @@ export const antiAuthGuard: CanActivateFn = (route, state) => {
   const isLoggedIn = authService.isLoggedIn();
 
   if (isLoggedIn) {
-    router.navigate(['/machines']);
+    router.navigate(['GymTracker/machines']);
     return false;
   } else {
     return true;

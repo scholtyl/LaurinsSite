@@ -1,0 +1,80 @@
+<div class="modal" [class.modal-open]="modalOpen" (click)="CloseModal()">
+  <div class="modal-box bg-base-300 animate-[fade-in_0.2s_ease-in-out]" (click)="$event.stopPropagation()">
+    <h3 class="font-bold text-lg mb-4 text-center">{{ selectedGuest.id ? 'Update User' : 'Add User' }}</h3>
+
+    <div class="form-control mb-2">
+      <label class="label"><span class="label-text">Name</span></label>
+      <input type="text" class="input input-bordered" [(ngModel)]="selectedGuest.name" />
+    </div>
+
+    <div class="form-control mb-4">
+      <label class="label"><span class="label-text">Remaining Drinks</span></label>
+      <input type="number" class="input input-bordered" [(ngModel)]="selectedGuest.numberOfRemainingDrinks" />
+    </div>
+
+    <div class="modal-action justify-between">
+      <button class="btn btn-error btn-outline" (click)="CloseModal()">Cancel</button>
+      <button *ngIf="selectedGuest?.id" class="btn text-error" (click)="deleteGuest()">Delete</button>
+      <button class="btn" (click)="SaveGuest()">{{ selectedGuest.id ? 'Update User' : 'Add User' }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- ^ Modal window ^ -->
+
+<div class="flex justify-center flex-wrap flex-col content-center mt-2">
+  <div class="flex w-full px-3 flex-col max-w-md gap-1">
+    <div class="flex justify-center my-2">
+      <div class="relative inline-block text-center">
+        <p class="text-xl font-bold px-4">Piet's Bar</p>
+        <img [src]="LogoURL()" alt="Logo" class="absolute left-full top-1/2 -translate-y-1/2 w-10 h-auto" />
+      </div>
+    </div>
+
+    <div class="card gap-2 place-items-center">
+      <div class="w-full flex justify-between items-center px-3 text">
+        <div class="flex-1 text-left w-1/3">
+          <p>Name</p>
+        </div>
+
+        <div class="flex-1 text-center w-1/3">
+          <p>Saldo</p>
+        </div>
+
+        <div class="flex-1 text-end w-1/3">
+          <p>- 1 Drink</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      @for (gast of guests; track $index) {
+      <div class="card gap-2 p-2 bg-base-300 rounded-box place-items-center" (click)="OpenEditModal(gast)">
+        <div class="w-full flex justify-between items-center px-3 text-xl">
+          <div class="flex-1 text-left w-1/3">
+            <div>
+              <p>{{gast.name}}</p>
+            </div>
+          </div>
+
+          <div class="flex-1 text-center w-1/3">
+            <p class="">{{gast.numberOfRemainingDrinks}}</p>
+          </div>
+
+          <div class="flex-1 justify-end w-1/3">
+            <div class="flex gap-1 justify-end">
+              <div class="flex gap-1 justify-end" (click)="subtractDrinkFromGuest(gast.id); $event.stopPropagation()">
+                <p class="font-bold text-error">-</p>
+                <i class="bx bx-drink text-error text-2xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      <div class="card place-items-center">
+        <button class="btn btn-outline btn-content" (click)="OpenAddModal()">Add User</button>
+      </div>
+    </div>
+  </div>
+</div>

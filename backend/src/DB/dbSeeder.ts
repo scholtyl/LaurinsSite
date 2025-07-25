@@ -1,7 +1,10 @@
+import { GuestDTO } from "../DTOs/Piets/guestDTO";
 import getDB from "./db";
 import bcrypt from "bcrypt";
 
 export class DbSeeder {
+
+  // ----------------- GymTracker ----------------- 
   static async seedUsers() {
     const db = await getDB();
 
@@ -77,6 +80,43 @@ export class DbSeeder {
         [trainingId, userId, machineId, trainingDate, 10, 50, 8, 55, 6, 60]
       );
       console.log("[Info] Default training for user Laurin on machine 1 added.");
+    }
+  }
+
+// ----------------- GymTracker ----------------- 
+
+
+  // ----------------- Piets ----------------- 
+
+  static async seedGuets() {
+    const db = await getDB();
+
+    const guests : GuestDTO[] = [
+      {
+        id: "1f71dbb2-432b-4e8a-9c9f-79dbdb0e0b92",
+        name: "Laurin",
+        numberOfRemainingDrinks: 5,
+        numberOfConsumedDrinks: 0
+      },
+      {
+        id: "8d6397a5-99fd-46d4-b95b-8c37f98d257a",
+        name: "Piet",
+        numberOfRemainingDrinks: -20,
+        numberOfConsumedDrinks: 5600
+      },
+    ];
+    
+    for (const guest of guests) {
+      const existingGuest = await db.get("SELECT id FROM guests WHERE id = ?", [guest.id]);
+      if (!existingGuest) {
+        await db.run("INSERT INTO guests (id, name, numberOfRemainingDrinks, numberOfConsumedDrinks) VALUES (?, ?, ?, ?)", [
+          guest.id,
+          guest.name,
+          guest.numberOfRemainingDrinks,
+          guest.numberOfConsumedDrinks,
+        ]);
+        console.log(`[Info] Gast ${guest.name} created.`);
+      }
     }
   }
 }

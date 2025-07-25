@@ -1,47 +1,65 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { MachineDetailComponent } from './components/machine-detail/machine-detail.component';
-import { MachinesComponent } from './components/machines/machines.component';
+import { HomeComponent as GymTrackerHomeComponent } from './GymTracker/components/home/home.component';
+import { MachineDetailComponent } from './GymTracker/components/machine-detail/machine-detail.component';
+import { MachinesComponent } from './GymTracker/components/machines/machines.component';
 import { authGuard } from './routeGuards/auth/auth.guard';
 import { antiAuthGuard } from './routeGuards/antiauth/anti-auth.guard';
-import { AdminComponent } from './components/admin/admin.component';
+import { AdminComponent } from './GymTracker/components/admin/admin.component';
 import { adminGuard } from './routeGuards/admin/admin.guard';
-import { StatisticsComponent } from './components/statistics/statistics.component';
+import { StatisticsComponent } from './GymTracker/components/statistics/statistics.component';
+import { HomeComponent as PietHomeComponent } from './PietsBar/components/home/piet.home.cp';
+import { HomeComponent } from './globalComponents/home/global.home.cp';
 
 export const routes: Routes = [
   {
     path: '',
-    title: 'GymTracker',
+    title: "Laurin's Site",
     component: HomeComponent,
-    canActivate: [antiAuthGuard]
+    data: { title: "Laurin's Site" },
   },
   {
-    path: 'machine/:id',
+    path: 'Piets',
+    title: "Piet's Bar",
+    component: PietHomeComponent,
+    data: { title: "Piet's Bar" },
+  },
+  {
+    path: 'GymTracker',
+    title: 'GymTracker',
+    component: GymTrackerHomeComponent,
+    canActivate: [antiAuthGuard],
+    data: { title: 'Gym Tracker' },
+  },
+  {
+    path: 'GymTracker/machine/:id',
     title: 'GymTracker',
     component: MachineDetailComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: 'Gym Tracker' },
   },
   {
-    path: 'machines',
+    path: 'GymTracker/machines',
     title: 'GymTracker',
     component: MachinesComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: 'Gym Tracker' },
   },
   {
-    path: 'admin',
+    path: 'GymTracker/admin',
     title: 'GymTracker',
     component: AdminComponent,
-    canActivate: [adminGuard]
+    canActivate: [adminGuard],
+    data: { title: 'Gym Tracker' },
   },
   {
-    path: 'statistics',
+    path: 'GymTracker/statistics',
     title: 'GymTracker',
     component: StatisticsComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { title: 'Gym Tracker' },
   },
   {
     path: '**',
-    title: 'GymTracker',
     redirectTo: '',
   },
 ];
