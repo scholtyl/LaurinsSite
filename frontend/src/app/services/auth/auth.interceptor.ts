@@ -1,21 +1,26 @@
+import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpRequest, HttpHandlerFn, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
+
   const token = authService.getToken();
 
-  if (token) {
-    // Clone the request to add the Authorization header with JWT token
-    const clonedRequest = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return next(clonedRequest);
-  }
+  const authReq = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
-  return next(req); // If no token, just proceed with the original request
+  return next(authReq).pipe(
+    catchError((error) => {
+      if (error.status === 401 || error.status === 403) {
+        authService.logout();
+      }
+      return throwError(() => error);
+    })
+  );
 };

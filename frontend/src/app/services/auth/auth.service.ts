@@ -36,7 +36,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.currentUserSubject.next(null);
-    this.router.navigate(['/GymTracker']);
+    this.router.navigate(['GymTracker']);
   }
 
   setCurrentUser(token: string): void {

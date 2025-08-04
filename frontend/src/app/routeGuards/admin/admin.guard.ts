@@ -9,7 +9,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
   if (authService.isAdmin()) {
     return true;
   } else {
-    router.navigate(['GymTracker/login']);
+    router.navigate(['GymTracker']);
     return false;
   }
 };
