@@ -1,0 +1,121 @@
+# .github/workflows/deploy.yml
+name: Deploy to Synology NAS
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to run this workflow on'
+        required: true
+        default: 'main'
+
+env:
+  BUILD_ID: "${{ github.run_number }}"
+
+jobs:
+  Build-Frontend-Backend:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_ID: ${{ github.run_number }}
+
+    outputs:
+      artifact_name: ${{ steps.name_step.outputs.artifact_name }}
+
+    steps:
+      - name: 🛒 Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.target_branch }}
+
+      - name: Show current branch
+        run: |
+          echo "Running on branch: ${{ github.event.inputs.target_branch }}"
+          git branch
+
+      - name: 🕒 Set date and artifact name
+        id: name_step
+        run: |
+          build_id=${BUILD_ID}
+          build_date=$(date +'%d.%m.%Y')
+          artifact_name="LaurinsSite-v${build_id}-${build_date}"
+          echo "artifact_name=$artifact_name" >> $GITHUB_OUTPUT
+
+      - name: 📦 Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: 🔨 Build backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: 📦 Install frontend dependencies
+        run: |
+          cd frontend
+          export NG_BUILD_ID=${BUILD_ID}
+          npm ci
+
+      - name: 🔨 Build frontend
+        run: |
+          cd frontend
+          export BUILD_ID=${BUILD_ID}
+          npm run dev_build
+          
+      - name: 📦 Reorganize build outputs
+        run: |
+          mkdir -p LaurinsSite/backend LaurinsSite/frontend
+          shopt -s dotglob
+          cp -r backend/dist/src/* LaurinsSite/backend/
+          cp backend/package*.json LaurinsSite/backend/
+          cp backend/ecosystem.config.js LaurinsSite/backend/
+          cp -r backend/public LaurinsSite/backend/
+          cp -r frontend/dist/gym-tracker/browser/* LaurinsSite/frontend/
+
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          include-hidden-files: true
+          name: ${{ steps.name_step.outputs.artifact_name }}
+          path: LaurinsSite/
+
+  Deploy-to-Nas-to-Dev:
+      needs: Build-Frontend-Backend
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: ⬇️ Download build artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: ${{ needs.Build-Frontend-Backend.outputs.artifact_name }}
+            path: ./build
+
+        - name: 🔐 Prepare SSH key
+          run: |
+            echo "${{ secrets.NAS_SSH_KEY }}" > id_rsa
+            chmod 600 id_rsa
+
+        - name: Create Folders
+          run: |
+            ssh -p 2222 -i id_rsa -o StrictHostKeyChecking=no webdeploy@schostore.synology.me "mkdir -p /volume1/web/Dev/LaurinsSite/backend && mkdir -p /volume1/web/Dev/LaurinsSite/frontend"
+
+        - name: Stop Backend
+          run: |
+            ssh -p 2222 -i id_rsa -o StrictHostKeyChecking=no webdeploy@schostore.synology.me "source ~/.profile && pm2 stop dev-server-backend"
+
+        - name: 📤 Upload backend to NAS
+          run: |
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/backend/. webdeploy@schostore.synology.me:/home/../../web/Dev/LaurinsSite/backend/
+
+        - name: 🔧 Install backend on NAS
+          run: |
+            ssh -p 2222 -i id_rsa webdeploy@schostore.synology.me "source ~/.profile && cd /volume1/web/Dev/LaurinsSite/backend && npm ci --only=production"
+
+        - name: Start Backend
+          run: |
+            ssh -p 2222 -i id_rsa -o StrictHostKeyChecking=no webdeploy@schostore.synology.me "source ~/.profile && cd /volume1/web/Dev/LaurinsSite/backend && pm2 start dev.ecosystem.config.js --env production"
+
+        - name: 📤 Upload frontend to NAS
+          run: |
+            scp -r -P 2222 -i id_rsa -o StrictHostKeyChecking=no ./build/frontend/. webdeploy@schostore.synology.me:/home/../../web/Dev/LaurinsSite/frontend
