@@ -1,5 +1,5 @@
 # .github/workflows/deploy.yml
-name: Deploy to Synology NAS
+name: Deploy to Synology NAS Dev
 
 on:
   workflow_dispatch:
