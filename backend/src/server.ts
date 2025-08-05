@@ -19,7 +19,7 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://schostore.synology.me:5600']  // your real frontend URL with port!
+    ? ['https://schostore.synology.me:5600', 'https://schostore.synology.me:5601']  // your real frontend URL with port!
     : ['http://localhost:4200'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
