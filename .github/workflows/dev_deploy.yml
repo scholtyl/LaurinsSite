@@ -3,11 +3,6 @@ name: Deploy to Synology NAS Dev
 
 on:
   workflow_dispatch:
-    inputs:
-      target_branch:
-        description: 'Branch to run this workflow on'
-        required: true
-        default: 'main'
 
 env:
   BUILD_ID: "${{ github.run_number }}"
@@ -26,11 +21,10 @@ jobs:
       - name: 🛒 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.target_branch }}
+          ref: dev
 
       - name: Show current branch
         run: |
-          echo "Running on branch: ${{ github.event.inputs.target_branch }}"
           git branch
 
       - name: 🕒 Set date and artifact name
