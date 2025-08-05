@@ -70,6 +70,7 @@ jobs:
           cp -r backend/dist/src/* LaurinsSite/backend/
           cp backend/package*.json LaurinsSite/backend/
           cp backend/ecosystem.config.js LaurinsSite/backend/
+          cp backend/dev.ecosystem.config.js LaurinsSite/backend/
           cp -r backend/public LaurinsSite/backend/
           cp -r frontend/dist/gym-tracker/browser/* LaurinsSite/frontend/
 
