@@ -37,10 +37,8 @@
             "scripts": []
           },
           "configurations": {
-            "options": {
-              "deployUrl": "/"
-            },
             "production": {
+              "deployUrl": "/",
               "budgets": [
                 {
                   "type": "initial",
