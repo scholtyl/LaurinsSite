@@ -102,7 +102,7 @@ jobs:
 
         - name: Stop Backend
           run: |
-            ssh -p 2222 -i id_rsa -o StrictHostKeyChecking=no webdeploy@schostore.synology.me "source ~/.profile && pm2 stop dev-server-backend"
+            ssh -p 2222 -i id_rsa -o StrictHostKeyChecking=no webdeploy@schostore.synology.me "source ~/.profile && pm2 stop dev-server-backend || true"
 
         - name: 📤 Upload backend to NAS
           run: |
