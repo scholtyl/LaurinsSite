@@ -4,10 +4,11 @@ import { MachineService } from '../../services/machine/machine.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { URLService } from '../../../services/url/url.service';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'machines-component',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './machines.component.html',
   styleUrl: './machines.component.css',
 })
@@ -15,6 +16,7 @@ export class MachinesComponent {
   constructor(private machineService: MachineService, private authService: AuthService, private router: Router) {}
 
   Machines?: Machine[];
+  loadedImages: { [key: string]: boolean } = {};
 
   ngOnInit() {
     this.machineService.getMachines().subscribe({
@@ -23,6 +25,10 @@ export class MachinesComponent {
       },
       error: console.log,
     });
+  }
+
+  onImageLoad(id: number) {
+    this.loadedImages[id] = true;
   }
 
   machineURL(id: number) {
